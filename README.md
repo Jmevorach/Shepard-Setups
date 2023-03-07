@@ -1,6 +1,6 @@
 # Shepard-Setups
 
-# Not yet ready; please do not use this code yet. Only temporarily public for testing purposes.
+# Alpha release! User feedback, code contributions and/or bug reports are greatly appreciated!
 
 [Shepard](https://github.com/Jmevorach/New-Shepard) setups from the Shepard User Community for use by anyone.
 
