@@ -1057,22 +1057,30 @@ class ShepardStack(Stack):
 
         #create SQS queue for S3 bucket events from the input S3 bucket.
 
+        dead_letter_queue = sqs.Queue(self, "DeadLetterQueue",
+                                      retention_period=Duration.seconds(1209600),
+                                      visibility_timeout=Duration.seconds(43200)
+                                      )
+
         if self.node.try_get_context("SQSName"):
             shepard_receive_queue = sqs.Queue(self, "SQSShepardReceiveQueue",
                                               queue_name=self.node.try_get_context("SQSName"),
                                               retention_period=Duration.seconds(1209600),
-                                              visibility_timeout=Duration.seconds(43200)
+                                              visibility_timeout=Duration.seconds(43200),
+                                              dead_letter_queue=sqs.DeadLetterQueue(
+                                                  max_receive_count=1,
+                                                  queue=dead_letter_queue
+                                              )
                                               )
         else:
             shepard_receive_queue = sqs.Queue(self, "SQSShepardReceiveQueue",
                                               retention_period=Duration.seconds(1209600),
-                                              visibility_timeout=Duration.seconds(43200)
+                                              visibility_timeout=Duration.seconds(43200),
+                                              dead_letter_queue=sqs.DeadLetterQueue(
+                                                  max_receive_count=1,
+                                                  queue=dead_letter_queue
                                               )
-
-        shepard_dead_letter_queue = sqs.DeadLetterQueue(
-            max_receive_count=1,
-            queue=shepard_receive_queue
-        )
+                                              )
 
         # attach tags if requested to new infrastructure
         if self.node.try_get_context("ResourceTags"):
@@ -1531,6 +1539,12 @@ class ShepardStack(Stack):
                   value=ecs_instance_role.role_arn,
                   description='ARN of the ECS instance role created for this architecture.',
                   export_name=stack_name + "ECSInstanceRoleARN", )
+
+        # export ecs instance role ARN.
+        CfnOutput(self, "ECSInstanceProfileName",
+                  value=ecs_instance_profile.ref,
+                  description='Name of the ECS instance profile created for this architecture.',
+                  export_name=stack_name + "ECSInstanceProfileName", )
 
         # export spot fleet role ARN.
         CfnOutput(self, "SpotFleetRoleARN",

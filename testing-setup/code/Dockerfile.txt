@@ -2,7 +2,7 @@
 # Author: Jacob Mevorach
 
 ########################### ESTABLISH BASE IMAGE ##################################
-FROM docker:dind
+FROM docker:23.0-dind
 MAINTAINER shepard_dev_group@googlegroups.com
 # ---------------------
 # SET WORKING DIRECTORY TO ROOT DIRECTORY
@@ -18,16 +18,6 @@ RUN apk update
 # APK UPGRADE
 # ---------------------
 RUN apk upgrade
-
-# ---------------------
-# APK GET OPENRC
-# ---------------------
-RUN apk add openrc --no-cache
-
-# ---------------------
-# APK GET TREE
-# ---------------------
-RUN apk add tree --no-cache
 
 # ---------------------
 # APK GET PYTHON3
