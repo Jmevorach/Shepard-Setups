@@ -319,14 +319,16 @@ class ShepardStack(Stack):
                                    billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
                                    encryption=dynamodb.TableEncryption.AWS_MANAGED,
                                    time_to_live_attribute='END_TIME',
-                                   table_name=self.node.try_get_context("TableName")
+                                   table_name=self.node.try_get_context("TableName"),
+                                   removal_policy=RemovalPolicy.DESTROY
                                    )
         else:
             table = dynamodb.Table(self, "ShepardDynamoDB",
                                    partition_key=dynamodb.Attribute(name="UUID", type=dynamodb.AttributeType.STRING),
                                    billing_mode=dynamodb.BillingMode.PAY_PER_REQUEST,
                                    encryption=dynamodb.TableEncryption.AWS_MANAGED,
-                                   time_to_live_attribute='END_TIME'
+                                   time_to_live_attribute='END_TIME',
+                                   removal_policy=RemovalPolicy.DESTROY
                                    )
 
         # attach tags if requested to new infrastructure
@@ -1539,6 +1541,12 @@ class ShepardStack(Stack):
                   value=ecs_instance_role.role_arn,
                   description='ARN of the ECS instance role created for this architecture.',
                   export_name=stack_name + "ECSInstanceRoleARN", )
+
+        # export ecs instance role ARN.
+        CfnOutput(self, "ECSInstanceRoleNAME",
+                  value=ecs_instance_role.role_name,
+                  description='Name of the ECS instance role created for this architecture.',
+                  export_name=stack_name + "ECSInstanceRoleName", )
 
         # export ecs instance role ARN.
         CfnOutput(self, "ECSInstanceProfileName",
