@@ -1,7 +1,5 @@
 # Shepard-Setups
 
-# Alpha release! User feedback, code contributions and/or bug reports are greatly appreciated!
-
 [Shepard](https://github.com/Jmevorach/New-Shepard) setups from the Shepard User Community for use by anyone.
 
 If you add a setup please make sure to documentation inside the folder containing your setup so fellow Shepard users know how to run jobs on the setup and any other useful information! 
@@ -30,9 +28,20 @@ A properly formatted Shepard deployment folder is a directory containing two sub
 
 ### Hello World Example
 ```
-pip install shepard
-shepard deploy --path_to_deployment_folder testing-setup
+#install shepard
+pip3 install shepard
+
+#deploy our testing infrastructure and code
+shepard deploy --cloudformation_stack_name testing --path_to_deployment_folder testing-setup
+
+#this job will fail
 shepard batch_via_api --json_payload '{"an_example_variable_name":"an_example_variable_value"}'
+
+#this job will succeed
+shepard batch_via_api --json_payload '{"test1":"test1","test2":"test2","test3":"test3","test4":"0"}'
+
+#after the jobs complete you can tear down the infrastructure with the following command
+shepard destroy --cloudformation_stack_name testing
 ```
 
 ## Joining the Shepard Dev Team
