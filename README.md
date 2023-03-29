@@ -2,7 +2,7 @@
 
 [Shepard](https://github.com/Jmevorach/New-Shepard) setups from the Shepard User Community for use by anyone.
 
-If you add a setup please make sure to documentation inside the folder containing your setup so fellow Shepard users know how to run jobs on the setup and any other useful information! 
+If you add a setup please make sure to add documentation inside the folder containing your setup so fellow Shepard users know how to run jobs on the setup and any other useful information! 
 
 ## Table of contents
 
